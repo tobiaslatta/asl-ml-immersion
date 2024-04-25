@@ -4,24 +4,24 @@
 # file except in compliance with the License. You may obtain a copy of the License at
 
 # https://www.apache.org/licenses/LICENSE-2.0
-
-# Unless required by applicable law or agreed to in writing, software
+    
+# Unless required by applicable law or agreed to in writing, software 
 # distributed under the License is distributed on an "AS IS"
-# BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-# express or implied. See the License for the specific language governing
+# BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+# express or implied. See the License for the specific language governing 
 # permissions and limitations under the License.
 
 steps:
 # Build the trainer image
-- name: # TODO
-  args: # TODO
-  dir:  # TODO
+- name: 'gcr.io/cloud-builders/docker' # TaDO
+  args:  ['build', '-t', 'us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex','.'] # TaDO
+  dir:  trainer_image_vertex # TaDO
 
 
 # Push the trainer image, to make it available in the compile step
-- name: # TODO
-  args: # TODO
-  dir:  # TODO
+- name: 'gcr.io/cloud-builders/docker' # TaDO
+  args: ['push', 'us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex']# TaDO
+  dir:  trainer_image_vertex # TaDO
 
 
 # Compile the pipeline
@@ -29,7 +29,7 @@ steps:
   args:
   - '-c'
   - |
-    kfp dsl compile # TODO
+    kfp dsl compile --py pipeline.py --output covertype_kfp_cicd.yaml # TaDO
   env:
   - 'PIPELINE_ROOT=gs://$PROJECT_ID-kfp-artifact-store/pipeline'
   - 'PROJECT_ID=$PROJECT_ID'
@@ -45,12 +45,11 @@ steps:
   args:
   - '-c'
   - |
-    python $_PIPELINE_FOLDER/kfp-cli_vertex/run_pipeline.py  # TODO
-
+    python $_PIPELINE_FOLDER/kfp-cli_vertex/run_pipeline.py $PROJECT_ID $_REGION $_PIPELINE_FOLDER/pipeline_vertex/covertype_kfp_cicd.yaml kfp_cicd_pipeline_run # TaDO project_id, region, template_path, display_name
+    
 # Push the images to Artifact Registry
-# TODO: List the images to be pushed to the project Docker registry
-images: # TODO
-
+# TaDO: List the images to be pushed to the project Docker registry
+images: ['us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex:latest']
 
 # This is required since the pipeline run overflows the default timeout
 timeout: 10800s
