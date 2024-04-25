@@ -15,13 +15,13 @@ steps:
 # Build the trainer image
 - name: 'gcr.io/cloud-builders/docker' # TaDO
   args:  ['build', '-t', 'us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex','.'] # TaDO
-  dir:  trainer_image_vertex # TaDO
+  dir:  $_PIPELINE_FOLDER/trainer_image_vertex # TaDO
 
 
 # Push the trainer image, to make it available in the compile step
 - name: 'gcr.io/cloud-builders/docker' # TaDO
-  args: ['push', 'us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex']# TaDO
-  dir:  trainer_image_vertex # TaDO
+  args: ['push', 'us-docker.pkg.dev/$PROJECT_ID/asl-artifact-repo/trainer_image_covertype_vertex'] # TaDO
+  dir:  $_PIPELINE_FOLDER/trainer_image_vertex # TaDO
 
 
 # Compile the pipeline
